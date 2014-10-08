@@ -1,13 +1,4 @@
-# |DRAFT-TITLE|
-
-This is the working area for the [IETF |WG-TITLE| Working
-Group](https://trac.tools.ietf.org/wg/|WG-NAME|/trac/wiki) draft of |DRAFT-TITLE|
-
-* [Editor's copy](https://rtcweb-wg.github.io/security-arch/)
-* [Working Group Draft] (https://tools.ietf.org/html/|DRAFT-NAME|)
-
-
-## Contributing
+# Contributing
 
 Before submitting feedback, please familiarize yourself with our current issues
 list and review the [working group home page](|WG-HOMEPAGE|). If you're
