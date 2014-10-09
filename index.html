@@ -470,7 +470,7 @@ ul.toc a:first-child {
 
   <meta name="dct.creator" content="Martinsen, P., Reddy, T., and P. Patil" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-martinsen-ice-dualstack-fairness-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-10-8" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-10-9" />
   <meta name="dct.abstract" content="This document provides guidelines on how to make Interactive Connectivity Establishment (ICE) conclude faster in IPv4/IPv6 dual-stack scenarios where broken paths exist. The provided guidelines are backwards compatible with the original ICE specification.  " />
   <meta name="description" content="This document provides guidelines on how to make Interactive Connectivity Establishment (ICE) conclude faster in IPv4/IPv6 dual-stack scenarios where broken paths exist. The provided guidelines are backwards compatible with the original ICE specification.  " />
 
@@ -494,12 +494,12 @@ ul.toc a:first-child {
   <td class="right">P. Patil</td>
 </tr>
 <tr>
-  <td class="left">Expires: April 11, 2015</td>
+  <td class="left">Expires: April 12, 2015</td>
   <td class="right">Cisco</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">October 8, 2014</td>
+  <td class="right">October 9, 2014</td>
 </tr>
 
     	
@@ -519,7 +519,7 @@ ul.toc a:first-child {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 11, 2015.</p>
+<p>This Internet-Draft will expire on April 12, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -555,6 +555,7 @@ ul.toc a:first-child {
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Improving ICE Dual Stack Fairness</h1>
 <p id="rfc.section.3.p.1">Candidates SHOULD be prioritized such that a long sequence of candidates belonging to the same address family will be intermingled with candidates from an alternate IP family. For example, promoting IPv4 candidates in the presence of many IPv6 candidates such that an IPv4 address candidate is always present after a small sequence of IPv6 candidates, i.e., reordering candidates such that both IPv6 and IPv4 candidates get a fair chance during the connectivity check phase. This makes ICE connectivity checks more responsive to broken path failures of an address family.  </p>
 <p id="rfc.section.3.p.2">An ICE agent can choose an algorithm or a technique of its choice to ensure that the resulting check lists have a fair intermingled mix of IPv4 and IPv6 address families. However, modifying the check list directly can lead to uncoordinated local and remote check lists that result in ICE taking longer to complete or in the worst case scenario fail. The best approach is to modify the formula for calculating the candidate priority value described in ICE <a href="#RFC5245">[RFC5245]</a> section 4.1.2.1.  </p>
+<p id="rfc.section.3.p.3">Implementations are encouraged to prioritize IPv6 candidates by putting some of them first in the the intermingled checklist. This increases the chance of a IPv6 connectivity checks to complete first and be ready for nomination or usage.  </p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#compability" id="compability">Compatibility</a></h1>
 <p id="rfc.section.4.p.1">ICE <a href="#RFC5245">[RFC5245]</a> section 4.1.2 states that the formula in section 4.1.2.1 SHOULD be used to calculate the candidate priority. The formula is as follows: </p>
 <pre>

@@ -5,8 +5,8 @@
 MMUSIC                                                      P. Martinsen
 Internet-Draft                                                  T. Reddy
 Intended status: Standards Track                                P. Patil
-Expires: April 11, 2015                                            Cisco
-                                                         October 8, 2014
+Expires: April 12, 2015                                            Cisco
+                                                         October 9, 2014
 
 
                    ICE IPv4/IPv6 Dual Stack Fairness
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 11, 2015.
+   This Internet-Draft will expire on April 12, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Martinsen, et al.        Expires April 11, 2015                 [Page 1]
+Martinsen, et al.        Expires April 12, 2015                 [Page 1]
 
 Internet-Draft           ICE DualStack Fairness             October 2014
 
@@ -66,7 +66,7 @@ Table of Contents
    4.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .   3
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
    8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Appendix A.  Example Algorithm for Choosing the Local Preference    6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Martinsen, et al.        Expires April 11, 2015                 [Page 2]
+Martinsen, et al.        Expires April 12, 2015                 [Page 2]
 
 Internet-Draft           ICE DualStack Fairness             October 2014
 
@@ -142,6 +142,11 @@ Internet-Draft           ICE DualStack Fairness             October 2014
    fail.  The best approach is to modify the formula for calculating the
    candidate priority value described in ICE [RFC5245] section 4.1.2.1.
 
+   Implementations are encouraged to prioritize IPv6 candidates by
+   putting some of them first in the the intermingled checklist.  This
+   increases the chance of a IPv6 connectivity checks to complete first
+   and be ready for nomination or usage.
+
 4.  Compatibility
 
    ICE [RFC5245] section 4.1.2 states that the formula in section
@@ -156,20 +161,21 @@ Internet-Draft           ICE DualStack Fairness             October 2014
    preference and local preference value should be chosen.  Instead of
    having a static local preference value for IPv4 and IPv6 addresses,
    it is possible to choose this value dynamically in such a way that
+
+
+
+
+Martinsen, et al.        Expires April 12, 2015                 [Page 3]
+
+Internet-Draft           ICE DualStack Fairness             October 2014
+
+
    IPv4 and IPv6 address candidate priorities ends up intermingled
    within the same candidate type.
 
    It is also possible to dynamically change the type preference in such
    a way that IPv4 and IPv6 address candidates end up intermingled
    regardless of candidate type.  This is useful if there are a lot of
-
-
-
-Martinsen, et al.        Expires April 11, 2015                 [Page 3]
-
-Internet-Draft           ICE DualStack Fairness             October 2014
-
-
    IPv6 host candidates effectively blocking connectivity checks for
    IPv4 server reflexive candidates.
 
@@ -212,19 +218,19 @@ Internet-Draft           ICE DualStack Fairness             October 2014
    Note that the list does not alter the component ID part of the
    formula.  This keeps the different components (RTP and RTCP) close in
    the list.  What matters is the ordering of the candidates with
+
+
+
+Martinsen, et al.        Expires April 12, 2015                 [Page 4]
+
+Internet-Draft           ICE DualStack Fairness             October 2014
+
+
    component ID 1.  Once the checklist is formed for a media stream the
    candidate pair with component ID 1 will be tested first.  If ICE
    connectivity check is successful then other candidate pairs with the
    same foundation will be unfrozen ([RFC5245] section 5.7.4.  Computing
    States).
-
-
-
-
-Martinsen, et al.        Expires April 11, 2015                 [Page 4]
-
-Internet-Draft           ICE DualStack Fairness             October 2014
-
 
    The local and remote agent can have different algorithms for choosing
    the local preference and type preference values without impacting the
@@ -266,21 +272,21 @@ Internet-Draft           ICE DualStack Fairness             October 2014
    authentication as described in section 2.5 of [RFC5245] apply to this
    use.
 
+
+
+
+
+
+Martinsen, et al.        Expires April 12, 2015                 [Page 5]
+
+Internet-Draft           ICE DualStack Fairness             October 2014
+
+
 7.  Acknowledgements
 
    Authors would like to thank Dan Wing, Ari Keranen, Bernard Aboba,
    Martin Thomson, Jonathan Lennox and Balint Menyhart for their
    comments and review.
-
-
-
-
-
-
-Martinsen, et al.        Expires April 11, 2015                 [Page 5]
-
-Internet-Draft           ICE DualStack Fairness             October 2014
-
 
 8.  Normative References
 
@@ -324,19 +330,18 @@ Appendix A.  Example Algorithm for Choosing the Local Preference
 
              local_preference = S - N*2*(Cn/Cmax)
 
+
+
+
+Martinsen, et al.        Expires April 12, 2015                 [Page 6]
+
+Internet-Draft           ICE DualStack Fairness             October 2014
+
+
    S: Address Type specific start value (IPv4 or IPv6 Start)
 
    N: Absolute value of IPv6_start-IPv4_start.  This ensures a positive
       number even if IPv4 is the highest priority.
-
-
-
-
-
-Martinsen, et al.        Expires April 11, 2015                 [Page 6]
-
-Internet-Draft           ICE DualStack Fairness             October 2014
-
 
    Cn:  Number of current candidates of a specific IP address type and
       candidate type (host, server reflexive or relay).
@@ -384,12 +389,7 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Martinsen, et al.        Expires April 11, 2015                 [Page 7]
+Martinsen, et al.        Expires April 12, 2015                 [Page 7]
 
 Internet-Draft           ICE DualStack Fairness             October 2014
 
@@ -445,4 +445,4 @@ Internet-Draft           ICE DualStack Fairness             October 2014
 
 
 
-Martinsen, et al.        Expires April 11, 2015                 [Page 8]
+Martinsen, et al.        Expires April 12, 2015                 [Page 8]
