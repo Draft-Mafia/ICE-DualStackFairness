@@ -1,9 +1,9 @@
-# |DRAFT-TITLE|
+# |ICE-DualStack Fairness|
 
-This is the working area for the [IETF |WG-TITLE| Working
-Group](https://trac.tools.ietf.org/wg/|WG-NAME|/trac/wiki) draft of |DRAFT-TITLE|
+This is the working area for the [IETF |MMUSIC| Working
+Group](https://trac.tools.ietf.org/wg/|MMUSIC|/trac/wiki) draft of |ICE-DualStackFairness|
 
-* [Editor's copy](https://rtcweb-wg.github.io/security-arch/)
+* [Editor's copy](http://draft-mafia.github.io/ICE-DualStackFairness/)
 * [Working Group Draft] (https://tools.ietf.org/html/|DRAFT-NAME|)
 
 
