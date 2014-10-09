@@ -139,7 +139,6 @@
         makes ICE connectivity checks more responsive to broken path
         failures of an address family.
       </t>
-
       <t>
         An ICE agent can choose an algorithm or a technique of its
         choice to ensure that the resulting check lists have a fair
@@ -150,6 +149,12 @@
         approach is to modify the formula for calculating the
         candidate priority value described in ICE <xref
         target="RFC5245"/> section 4.1.2.1.
+      </t>
+      <t>
+        Implementations are encouraged to prioritize IPv6 candidates
+        by putting some of them first in the the intermingled
+        checklist. This increases the chance of a IPv6 connectivity
+        checks to complete first and be ready for nomination or usage.
       </t>
     </section>
 
