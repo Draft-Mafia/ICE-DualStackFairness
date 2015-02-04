@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-martinsen-ice-dualstack-fairness-latest"
+<rfc category="std" docName="draft-martinsen-mmusic-ice-dualstack-fairness-latest"
      ipr="trust200902">
   <front>
     <title abbrev="ICE DualStack Fairness ">ICE IPv4/IPv6 Dual Stack Fairness</title>
@@ -60,10 +60,10 @@
     <abstract>
       <t>
         This document provides guidelines on how to make Interactive
-        Connectivity Establishment (ICE) conclude faster in IPv4/IPv6
-        dual-stack scenarios where broken paths exist. The provided
-        guidelines are backwards compatible with the original ICE
-        specification.
+        Connectivity Establishment (ICE) conclude faster in multihomed
+        and IPv4/IPv6 dual-stack scenarios where broken paths
+        exist. The provided guidelines are backwards compatible with
+        the original ICE specification.
       </t>
     </abstract>
   </front>
@@ -71,15 +71,26 @@
   <middle>
     <section anchor="introduction" title="Introduction">
       <t>
-        There is a need to introduce more fairness in the handling of
-        connectivity checks for different IP address families in
-        dual-stack IPv4/IPv6 ICE scenarios. Section 4.1.2.1 of ICE
-        <xref target="RFC5245"/> points to <xref target="RFC3484"/>
-        for prioritizing among the different IP families. <xref
-        target="RFC3484"/> is obsoleted by <xref target="RFC6724"/>
-        but following the recommendations from the updated RFC will
-        lead to prioritization of IPv6 over IPv4 for the same
-        candidate type. Due to this, connectivity checks for
+        Applications should take special care to deprioritize network
+        interfaces known to provide unreliable connectivity. For
+        example certain tunnel services might provide unreliable
+        connectivity. This specification provides simple guidelines on
+        how to deprioritize interfaces known by the application to
+        provide unreliable connectivity. This application knowledge can
+        for example be based on simple dynamic metrics or a more
+        static model based on the interface type.
+      </t>
+
+      <t>
+        There is a also need to introduce more fairness in the
+        handling of connectivity checks for different IP address
+        families in dual-stack IPv4/IPv6 ICE scenarios. Section
+        4.1.2.1 of ICE <xref target="RFC5245"/> points to <xref
+        target="RFC3484"/> for prioritizing among the different IP
+        families. <xref target="RFC3484"/> is obsoleted by <xref
+        target="RFC6724"/> but following the recommendations from the
+        updated RFC will lead to prioritization of IPv6 over IPv4 for
+        the same candidate type. Due to this, connectivity checks for
         candidates of the same type (host, reflexive or relay) are
         sent such that an IP address family is completely depleted
         before checks from the other address family are started. This
@@ -98,7 +109,7 @@
         penalty to the address type that otherwise would have been
         prioritized.
       </t>
-      
+            
       <t>
         The guidelines outlined in this specification are backward
         compatible with a standard ICE implementation. This
@@ -108,8 +119,6 @@
         introduced fairness might be better, but not worse than what
         exists today.
       </t>
-      
-
     </section>
 
     <section anchor="notation" title="Notational Conventions">
@@ -126,6 +135,34 @@
       </t>
     </section>
 
+    <section title="Improving ICE Multihomed Fairness">
+      <t>
+        A multihomed ICE agent can potentially send and receive
+        connectivity checks on all available interfaces. Some care
+        should be taken to check if it has a valid IP address and the
+        interface is correctly set up to both send and receive
+        connectivity checks. How to do this will be platform specific.
+      </t>
+
+      <t>
+        Candidates from a interfaces known to the application to
+        provide unreliable connectivity SHOULD get a low candidate
+        priority. This ensures they appear near the end of the
+        candidate list, and would be the last to be tested during the
+        connectivity check phase. This allows candidate pairs more
+        likely to succeed to be tested first. 
+      </t>
+
+      <t>
+        If the application is unable to get any interface information
+        regarding type or unable to store any relevant metrics, it
+        SHOULD treat all interfaces as if they have reliable
+        connectivity. This ensures all interfaces gets their fair
+        chance to test their connectivity checks.
+      </t>
+    </section>
+
+
     <section title="Improving ICE Dual Stack Fairness">
       <t>
         Candidates SHOULD be prioritized such that a long sequence of
@@ -139,6 +176,7 @@
         makes ICE connectivity checks more responsive to broken path
         failures of an address family.
       </t>
+
       <t>
         An ICE agent can choose an algorithm or a technique of its
         choice to ensure that the resulting check lists have a fair
@@ -150,14 +188,19 @@
         candidate priority value described in ICE <xref
         target="RFC5245"/> section 4.1.2.1.
       </t>
+
       <t>
-        Implementations are encouraged to prioritize IPv6 candidates
-        by putting some of them first in the the intermingled
-        checklist. This increases the chance of a IPv6 connectivity
-        checks to complete first and be ready for nomination or usage.
-      </t>
+        Implementations SHOULD prioritize IPv6 candidates by putting
+        some of them first in the the intermingled checklist. This
+        increases the chance of a IPv6 connectivity checks to complete
+        first and be ready for nomination or usage. This enables
+        implementations to follow the intent of <xref
+        target="RFC6555"/>Happy Eyeballs: Success with Dual-Stack
+        Hosts
+      </t>      
     </section>
 
+    
     <section anchor="compability" title="Compatibility">
       <t>
         ICE <xref target="RFC5245"/> section 4.1.2 states that the
@@ -300,41 +343,16 @@
       </t>
     </section>
 
-    
-    <section title="IANA Considerations">
-      <t>
-        None.
-      </t>
-    </section>
 
-    <section anchor="security" title="Security Considerations">
-      <t>
-        STUN connectivity check using MAC computed during key
-        exchanged in the signaling channel provides message integrity
-        and data origin authentication as described in section 2.5 of
-        <xref target="RFC5245"/> apply to this use.
-      </t>
-    </section>
-
-    <section anchor="ack" title="Acknowledgements">
-      <t>
-        Authors would like to thank Dan Wing, Ari Keranen, Bernard
-        Aboba, Martin Thomson, Jonathan Lennox and Balint Menyhart for
-        their comments and review.
-      </t>
-    </section>
-    
-  </middle>
-  
-  <back>
-    <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.3484"?>
-      <?rfc include="reference.RFC.5245"?>
-      <?rfc include="reference.RFC.6724"?>
-    </references>
-    
     <section title="Example Algorithm for Choosing the Local Preference">
+      <t>
+        The algorithm described in this section MAY be used by an
+        implementation to introduce IPv4/IPv6 dual stack and
+        multihomed fairness. Implementations implementing their own
+        algorithm must take care not to break any ICE
+        compatibility. See Section <xref target="compability"/> for
+        details.
+      </t>
       <t>
         The value space for the local preference is from 0 to 65535
         inclusive. This value space can be divided up in chunks for
@@ -343,12 +361,16 @@
       
       <t>
         An IPv6 and IPv4 start priority must be given. In this example
-        IPv6 starts at 60000 and IPv4 at 59000. This leaves enough
-        address space to further play with the values if different
-        interface priorities needs to be added. The highest value
-        should be given to the address family that should be
-        prioritized.
+        IPv6 starts at 60000 and IPv4 at 59000. IPv6 SHOULD be
+        given the highest start priority.
       </t>
+
+      <t>
+        Interfaces known to the application to provide unreliable
+        connectivity will be given a low local_preference value. This
+        will place those candidates late in a sorted candidate list.
+      </t>
+
       <t>
         <figure>
           <artwork align="left"><![CDATA[
@@ -369,13 +391,13 @@
       <t>
         <figure>
           <artwork align="left"><![CDATA[
-          local_preference = S - N*2*(Cn/Cmax)
+          local_preference = ((S - N*2*(Cn/Cmax))* Ri) + I
           ]]></artwork>
         </figure>
       </t>
       <t>
         <list style="hanging">
-          <t hangText="S:"> Address Type specific start value (IPv4 or
+          <t hangText="S:"> Address type specific start value (IPv4 or
           IPv6 Start)</t>
           
           <t hangText="N:"> Absolute value of
@@ -391,11 +413,25 @@
           <t hangText="Cmax:"> Number of allowed consecutive
           candidates of the same IP address type.
           </t>
+
+          <t hangText="Ri:"> Reliable interface. A reliable interface
+          known by the application to provide stable connectivity
+          should set this value to 1. Interfaces known to provide
+          unreliable connectivity should set this to 0. (Allowed
+          values are 0 and 1)
+          </t>
+
+          <t hangText="I:"> Interface priority. Unreliable interfaces
+          can set this value to get a priority among the unreliable
+          interfaces. Max value is recommended to be N. Reliable
+          interfaces should set this to 0.
+          </t>
         </list>
       </t>
       <t>
         Using the values N=abs(60000-59000) and Cmax = 2 yields the
-        following sorted local candidate list:
+        following sorted local candidate list with only reliable
+        interfaces:
       <figure>
         <artwork align="left"><![CDATA[
  (1)  HOST  IPv6 (1) Priority: 2129289471
@@ -425,5 +461,41 @@
         candidate type.
       </t>
     </section>
+    
+    <section title="IANA Considerations">
+      <t>
+        None.
+      </t>
+    </section>
+
+    <section anchor="security" title="Security Considerations">
+      <t>
+        STUN connectivity check using MAC computed during key
+        exchanged in the signaling channel provides message integrity
+        and data origin authentication as described in section 2.5 of
+        <xref target="RFC5245"/> apply to this use.
+      </t>
+    </section>
+
+    <section anchor="ack" title="Acknowledgements">
+      <t>
+        Authors would like to thank Dan Wing, Ari Keranen, Bernard
+        Aboba, Martin Thomson, Jonathan Lennox, Balint Menyhart and
+        Simon Perreault for their comments and review.
+      </t>
+    </section>
+    
+  </middle>
+  
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.3484"?>
+      <?rfc include="reference.RFC.5245"?>
+      <?rfc include="reference.RFC.6555"?>
+      <?rfc include="reference.RFC.6724"?>
+    </references>
+    
+
   </back>
 </rfc>
