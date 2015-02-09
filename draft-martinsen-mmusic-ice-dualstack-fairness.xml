@@ -74,11 +74,13 @@
         Applications should take special care to deprioritize network
         interfaces known to provide unreliable connectivity. For
         example certain tunnel services might provide unreliable
-        connectivity. This specification provides simple guidelines on
+        connectivity. The simple guidelines presented here describes
         how to deprioritize interfaces known by the application to
-        provide unreliable connectivity. This application knowledge can
-        for example be based on simple dynamic metrics or a more
-        static model based on the interface type.
+        provide unreliable connectivity. This application knowledge
+        can be based on simple metrics like previous connection
+        success/failure rates or a more static model based on
+        interface types like wired, wireless, cellular, virtual,
+        tunnelled and so on.
       </t>
 
       <t>
@@ -138,14 +140,14 @@
     <section title="Improving ICE Multihomed Fairness">
       <t>
         A multihomed ICE agent can potentially send and receive
-        connectivity checks on all available interfaces. Some care
-        should be taken to check if it has a valid IP address and the
-        interface is correctly set up to both send and receive
-        connectivity checks. How to do this will be platform specific.
+        connectivity checks on all available interfaces. To avoid
+        unnecessary delay when performing connectivity checks it would
+        be beneficial to prioritize interfaces known by the agent to
+        provide connectivity.
       </t>
 
       <t>
-        Candidates from a interfaces known to the application to
+        Candidates from a interface known to the application to
         provide unreliable connectivity SHOULD get a low candidate
         priority. This ensures they appear near the end of the
         candidate list, and would be the last to be tested during the
@@ -158,7 +160,7 @@
         regarding type or unable to store any relevant metrics, it
         SHOULD treat all interfaces as if they have reliable
         connectivity. This ensures all interfaces gets their fair
-        chance to test their connectivity checks.
+        chance to perform their connectivity checks.
       </t>
     </section>
 
@@ -196,7 +198,7 @@
         first and be ready for nomination or usage. This enables
         implementations to follow the intent of <xref
         target="RFC6555"/>Happy Eyeballs: Success with Dual-Stack
-        Hosts
+        Hosts.
       </t>      
     </section>
 
@@ -346,7 +348,7 @@
 
     <section title="Example Algorithm for Choosing the Local Preference">
       <t>
-        The algorithm described in this section MAY be used by an
+        The algorithm described in this section can be used by an
         implementation to introduce IPv4/IPv6 dual stack and
         multihomed fairness. Implementations implementing their own
         algorithm must take care not to break any ICE
@@ -361,14 +363,15 @@
       
       <t>
         An IPv6 and IPv4 start priority must be given. In this example
-        IPv6 starts at 60000 and IPv4 at 59000. IPv6 SHOULD be
+        IPv6 starts at 60000 and IPv4 at 59000. IPv6 should be
         given the highest start priority.
       </t>
 
       <t>
         Interfaces known to the application to provide unreliable
         connectivity will be given a low local_preference value. This
-        will place those candidates late in a sorted candidate list.
+        will place candidates from those interface near the end in a
+        sorted candidate list.
       </t>
 
       <t>
@@ -415,7 +418,7 @@
           </t>
 
           <t hangText="Ri:"> Reliable interface. A reliable interface
-          known by the application to provide stable connectivity
+          known by the application to provide reliable connectivity
           should set this value to 1. Interfaces known to provide
           unreliable connectivity should set this to 0. (Allowed
           values are 0 and 1)
