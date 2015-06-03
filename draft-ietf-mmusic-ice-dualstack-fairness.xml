@@ -13,7 +13,8 @@
 <rfc category="std" docName="draft-ietf-mmusic-ice-dualstack-fairness-latest"
      ipr="trust200902">
   <front>
-    <title abbrev="ICE DualStack Fairness ">ICE IPv4/IPv6 Dual Stack Fairness</title>
+    <title abbrev="ICE Multihomed and DualStack Fairness ">ICE
+    Multihomed and IPv4/IPv6 Dual Stack Fairness</title>
     <author fullname="Paal-Erik Martinsen" initials="P.E" surname="Martinsen">
       <organization abbrev="Cisco">Cisco Systems, Inc.</organization>
       <address>
@@ -72,15 +73,15 @@
     <section anchor="introduction" title="Introduction">
       <t>
         Applications should take special care to deprioritize network
-        interfaces known to provide unreliable connectivity. For
-        example certain tunnel services might provide unreliable
-        connectivity. The simple guidelines presented here describes
-        how to deprioritize interfaces known by the application to
-        provide unreliable connectivity. This application knowledge
-        can be based on simple metrics like previous connection
-        success/failure rates or a more static model based on
-        interface types like wired, wireless, cellular, virtual,
-        tunnelled and so on.
+        interfaces known to provide unreliable connectivity when
+        operating in a multihomed environment. For example certain
+        tunnel services might provide unreliable connectivity. The
+        simple guidelines presented here describes how to deprioritize
+        interfaces known by the application to provide unreliable
+        connectivity. This application knowledge can be based on
+        simple metrics like previous connection success/failure rates
+        or a more static model based on interface types like wired,
+        wireless, cellular, virtual, tunnelled and so on.
       </t>
 
       <t>
@@ -343,128 +344,12 @@
         will still be synchronized. The introduced fairness might be
         better, but not worse than what exists today
       </t>
-    </section>
-
-
-    <section title="Example Algorithm for Choosing the Local Preference">
       <t>
-        The algorithm described in this section can be used by an
-        implementation to introduce IPv4/IPv6 dual stack and
-        multihomed fairness. Implementations implementing their own
-        algorithm must take care not to break any ICE
-        compatibility. See Section <xref target="compability"/> for
-        details.
-      </t>
-      <t>
-        The value space for the local preference is from 0 to 65535
-        inclusive. This value space can be divided up in chunks for
-        each IP address family.
-      </t>
-      
-      <t>
-        An IPv6 and IPv4 start priority must be given. In this example
-        IPv6 starts at 60000 and IPv4 at 59000. IPv6 should be
-        given the highest start priority.
-      </t>
-
-      <t>
-        Interfaces known to the application to provide unreliable
-        connectivity will be given a low local_preference value. This
-        will place candidates from those interface near the end in a
-        sorted candidate list.
-      </t>
-
-      <t>
-        <figure>
-          <artwork align="left"><![CDATA[
-       IPv6    IPv4 
-       Start   Start 
-65535  60k     59k    58k    57k    56k    55k                    0
-+--------+------+------+------+------+------+---------------------+
-|        | IPv6 | IPv4 | IPv6 | IPv4 | IPv6 |                     |
-|        | (1)  |  (1) |  (2) |  (2) |  (3) |                     |
-+--------+------+------+------+------+------+---------------------+
-          <- N->
-          ]]></artwork>
-        </figure>
-      </t>
-      <t>
-        The local preference can be calculated by the given formula:
-      </t>
-      <t>
-        <figure>
-          <artwork align="left"><![CDATA[
-          local_preference = ((S - N*2*(Cn/Cmax))* Ri) + I
-          ]]></artwork>
-        </figure>
-      </t>
-      <t>
-        <list style="hanging">
-          <t hangText="S:"> Address type specific start value (IPv4 or
-          IPv6 Start)</t>
-          
-          <t hangText="N:"> Absolute value of
-          IPv6_start-IPv4_start. This ensures a positive number even
-          if IPv4 is the highest priority.
-          </t>
-          
-          <t hangText="Cn:"> Number of current candidates of a
-          specific IP address type and candidate type (host, server
-          reflexive or relay).
-          </t>
-          
-          <t hangText="Cmax:"> Number of allowed consecutive
-          candidates of the same IP address type.
-          </t>
-
-          <t hangText="Ri:"> Reliable interface. A reliable interface
-          known by the application to provide reliable connectivity
-          should set this value to 1. Interfaces known to provide
-          unreliable connectivity should set this to 0. (Allowed
-          values are 0 and 1)
-          </t>
-
-          <t hangText="I:"> Interface priority. Unreliable interfaces
-          can set this value to get a priority among the unreliable
-          interfaces. Max value is recommended to be N. Reliable
-          interfaces should set this to 0.
-          </t>
-        </list>
-      </t>
-      <t>
-        Using the values N=abs(60000-59000) and Cmax = 2 yields the
-        following sorted local candidate list with only reliable
-        interfaces:
-      <figure>
-        <artwork align="left"><![CDATA[
- (1)  HOST  IPv6 (1) Priority: 2129289471
- (2)  HOST  IPv6 (2) Priority: 2129289470
- (3)  HOST  IPv4 (1) Priority: 2129033471
- (4)  HOST  IPv4 (2) Priority: 2129033470
- (5)  HOST  IPv6 (1) Priority: 2128777471
- (6)  HOST  IPv6 (2) Priority: 2128777470
- (7)  HOST  IPv4 (1) Priority: 2128521471
- (8)  HOST  IPv4 (2) Priority: 2128521470
- (9)  HOST  IPv6 (1) Priority: 2128265471
- (10) HOST  IPv6 (2) Priority: 2128265470
- (11) SRFLX IPv6 (1) Priority: 1693081855
- (12) SRFLX IPv6 (2) Priority: 1693081854
- (13) SRFLX IPv4 (1) Priority: 1692825855
- (14) SRFLX IPv4 (2) Priority: 1692825854
- (15) RELAY IPv6 (1) Priority: 15360255
- (16) RELAY IPv6 (2) Priority: 15360254
- (17) RELAY IPv4 (1) Priority: 15104255
- (18) RELAY IPv4 (2) Priority: 15104254
-          ]]></artwork>
-      </figure>
-      
-        The result is an even spread of IPv6 and IPv4 candidates among
-        the different candidate types (host, server reflexive, relay). The
-        local preference value is calculated separately for each
-        candidate type.
+        A test implementation with an example algorithm is available
+        <xref target="ICE_dualstack_imp"/>.
       </t>
     </section>
-    
+
     <section title="IANA Considerations">
       <t>
         None.
@@ -498,7 +383,30 @@
       <?rfc include="reference.RFC.6555"?>
       <?rfc include="reference.RFC.6724"?>
     </references>
+
+    <references title="Informative References">
+            
+      <reference anchor="ICE_dualstack_imp" target="https://github.com/palerikm/ICE-DualStackFairness">
+        <front>
+          <title>ICE DualStack Test Implementation github repo</title>
+          <author fullname="Paal-Erik Martinsen" initials="P.E" surname="Martinsen">
+            <organization abbrev="Cisco">Cisco Systems, Inc.</organization>
+            <address>
+              <postal>
+                <street>Philip Pedersens Vei 22</street>
+                <city>Lysaker</city>
+                <region>Akershus</region>
+                <code>1325</code>
+                <country>Norway</country>
+              </postal>
+              <email>palmarti@cisco.com</email>
+            </address>
+          </author>
+          <date/>
+        </front>
+      </reference>
     
+    </references>
 
   </back>
 </rfc>
