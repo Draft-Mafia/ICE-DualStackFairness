@@ -75,17 +75,16 @@
         Applications should take special care to deprioritize network
         interfaces known to provide unreliable connectivity when
         operating in a multihomed environment. For example certain
-        tunnel services might provide unreliable connectivity. The
+        tunnel services might provide unreliable connectivity. Doing so
+        will ensure a more fair distribution of the connectivity
+        checks across available network interfaces on the device. The
         simple guidelines presented here describes how to deprioritize
         interfaces known by the application to provide unreliable
-        connectivity. This application knowledge can be based on
-        simple metrics like previous connection success/failure rates
-        or a more static model based on interface types like wired,
-        wireless, cellular, virtual, tunneled and so on.
+        connectivity. 
       </t>
 
       <t>
-        There is a also need to introduce more fairness in the
+        There is a also a need to introduce more fairness when
         handling of connectivity checks for different IP address
         families in dual-stack IPv4/IPv6 ICE scenarios. Section
         4.1.2.1 of ICE <xref target="RFC5245"/> points to <xref
@@ -114,11 +113,11 @@
       </t>
 
       <t>
-        This document describes how to fairly order the candidates
-        thus affecting the order of the candidate pair connectivity
-        checks. Ultimately it is up to the agent to decide what
-        candidate pairs in the valid list are chosen to be used for
-        media transport.
+        This document describes how to fairly order the candidates in
+        multihomed and dual-stack environments, thus affecting the
+        sending order of the connectivity checks. Ultimately it
+        is up to the agent to decide what candidate pair is best
+        suited for transporting media.
       </t>
                   
       <t>
@@ -149,10 +148,24 @@
     <section title="Improving ICE Multihomed Fairness">
       <t>
         A multihomed ICE agent can potentially send and receive
-        connectivity checks on all available interfaces. To avoid
-        unnecessary delay when performing connectivity checks it would
-        be beneficial to prioritize interfaces known by the agent to
-        provide connectivity.
+        connectivity checks on all available interfaces and IP
+        addresses. It is possible for an interface to have several IP
+        addresses associated with it.  To avoid unnecessary delay when
+        performing connectivity checks it would be beneficial to
+        prioritize interfaces and IP addresses known by the agent to
+        provide stable connectivity. If the agent have
+        access to information about the physical network it is
+        connected to (Like SSID in a WiFi Network) this can be used as
+        information regarding how that network interface should be
+        prioritized at this point in time.
+      </t>
+
+      <t>
+        The application knowledge regarding the reliability of an
+        interface can also be based on simple metrics like previous
+        connection success/failure rates or a more static model based
+        on interface types like wired, wireless, cellular, virtual,
+        tunneled and so on.
       </t>
 
       <t>
@@ -207,8 +220,8 @@
         first and be ready for nomination or usage. This enables
         implementations to follow the intent of <xref
         target="RFC6555"/> "Happy Eyeballs: Success with Dual-Stack
-        Hosts". It is worth noting that the timing recommendations in <xref
-        target="RFC6555"/> are to excessive for ICE usage.
+        Hosts". It is worth noting that the timing recommendations in
+        <xref target="RFC6555"/> are to excessive for ICE usage.
       </t>      
     </section>
 
@@ -236,26 +249,43 @@
         for IPv4 and IPv6 addresses, it is possible to choose this
         value dynamically in such a way that IPv4 and IPv6 address
         candidate priorities ends up intermingled within the same
-        candidate type.
+        candidate type. It is also possible to assign lower priorities
+        to IP addresses derived from unreliable interfaces using the
+        local preference value.
+      </t>
+      
+      <t>
+        It is worth mentioning that <xref target="RFC5245"/> section
+        4.1.2 say that; "if there are multiple candidates for a
+        particular component for a particular media stream that have
+        the same type, the local preference MUST be unique for each
+        one".
       </t>
 
       <t>
-        It is also possible to dynamically change the type preference
-        in such a way that IPv4 and IPv6 address candidates end up
-        intermingled regardless of candidate type.  This is useful if
-        there are a lot of IPv6 host candidates effectively blocking
-        connectivity checks for IPv4 server reflexive candidates.
+        The local type preference can be dynamically changed in such a
+        way that IPv4 and IPv6 address candidates end up intermingled
+        regardless of candidate type.  This is useful if there are a
+        lot of IPv6 host candidates effectively blocking connectivity
+        checks for IPv4 server reflexive candidates.
+      </t>
+
+      <t>
+        Candidates with IP addresses from a unreliable interface SHOULD
+        be ordered at the end of the checklist. Not intermingled as the
+        dual-stack candidates. 
       </t>
 
       <t>
         The list below shows a sorted local candidate list where the
         priority is calculated in such a way that the IPv4 and IPv6
-        candidates are intermingled. To allow for earlier connectivity
-        checks for the IPv4 server reflexive candidates, some of the
-        IPv6 host candidates are demoted. This is just an example of
-        how a candidate priorities can be calculated to provide better
-        fairness between IPv4 and IPv6 candidates without breaking any
-        of the ICE connectivity checks.
+        candidates are intermingled (No multihomed candidates). To
+        allow for earlier connectivity checks for the IPv4 server
+        reflexive candidates, some of the IPv6 host candidates are
+        demoted. This is just an example of how a candidate priorities
+        can be calculated to provide better fairness between IPv4 and
+        IPv6 candidates without breaking any of the ICE connectivity
+        checks.
       </t>
 
       <t><figure>
@@ -377,8 +407,8 @@
     <section anchor="ack" title="Acknowledgements">
       <t>
         Authors would like to thank Dan Wing, Ari Keranen, Bernard
-        Aboba, Martin Thomson, Jonathan Lennox, Balint Menyhart and
-        Simon Perreault for their comments and review.
+        Aboba, Martin Thomson, Jonathan Lennox, Balint Menyhart, Ole
+        Troan and Simon Perreault for their comments and review.
       </t>
     </section>
     
