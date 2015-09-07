@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-mmusic-ice-dualstack-fairness-latest"
+<rfc category="info" docName="draft-ietf-mmusic-ice-dualstack-fairness-latest"
      ipr="trust200902">
   <front>
     <title abbrev="ICE Multihomed and DualStack Fairness ">ICE
@@ -85,14 +85,14 @@
 
       <t>
         There is a also a need to introduce more fairness when
-        handling of connectivity checks for different IP address
-        families in dual-stack IPv4/IPv6 ICE scenarios. Section
-        4.1.2.1 of ICE <xref target="RFC5245"/> points to <xref
-        target="RFC3484"/> for prioritizing among the different IP
-        families. <xref target="RFC3484"/> is obsoleted by <xref
-        target="RFC6724"/> but following the recommendations from the
-        updated RFC will lead to prioritization of IPv6 over IPv4 for
-        the same candidate type. Due to this, connectivity checks for
+        handling connectivity checks for different IP address families
+        in dual-stack IPv4/IPv6 ICE scenarios. Section 4.1.2.1 of ICE
+        <xref target="RFC5245"/> points to <xref target="RFC3484"/>
+        for prioritizing among the different IP families. <xref
+        target="RFC3484"/> is obsoleted by <xref target="RFC6724"/>
+        but following the recommendations from the updated RFC will
+        lead to prioritization of IPv6 over IPv4 for the same
+        candidate type. Due to this, connectivity checks for
         candidates of the same type (host, reflexive or relay) are
         sent such that an IP address family is completely depleted
         before checks from the other address family are started. This
@@ -115,9 +115,11 @@
       <t>
         This document describes how to fairly order the candidates in
         multihomed and dual-stack environments, thus affecting the
-        sending order of the connectivity checks. Ultimately it
-        is up to the agent to decide what candidate pair is best
-        suited for transporting media.
+        sending order of the connectivity checks. If aggressive
+        nomination is in use this will affect what candidate pair is
+        chosen as the active one. Ultimately it should be up to the
+        agent to decide what candidate pair is best suited for
+        transporting media.
       </t>
                   
       <t>
@@ -384,6 +386,11 @@
         better, but not worse than what exists today
       </t>
       <t>
+        If aggressive nomination is in use the procedures described in
+        this document might change what candidate pair ends up as the
+        active one.
+      </t>
+      <t>
         A test implementation with an example algorithm is available
         <xref target="ICE_dualstack_imp"/>.
       </t>
@@ -393,6 +400,95 @@
       <t>
         None.
       </t>
+    </section>
+<section title="Implementation Status">
+      <t>
+        [Note to RFC Editor: Please remove this section and reference to
+        <xref target="RFC6982"></xref> prior to publication.]
+      </t>
+
+      <t>
+        This section records the status of known implementations of the
+        protocol defined by this specification at the time of posting of this
+        Internet-Draft, and is based on a proposal described in <xref
+        target="RFC6982"></xref>. The description of implementations in this
+        section is intended to assist the IETF in its decision processes in
+        progressing drafts to RFCs. Please note that the listing of any
+        individual implementation here does not imply endorsement by the IETF.
+        Furthermore, no effort has been spent to verify the information
+        presented here that was supplied by IETF contributors. This is not
+        intended as, and must not be construed to be, a catalog of available
+        implementations or their features. Readers are advised to note that
+        other implementations may exist.
+      </t>
+
+      <t>
+        According to <xref target="RFC6982"></xref>, "this will allow
+        reviewers and working groups to assign due consideration to documents
+        that have the benefit of running code, which may serve as evidence of
+        valuable experimentation and feedback that have made the implemented
+        protocols more mature. It is up to the individual working groups to use
+        this information as they see fit".
+      </t>
+      
+      <section title="ICE-Dual Starck Fairness Test code">
+        <t>
+          <list style="hanging">
+            <t hangText="Organization: ">Cisco 
+            </t>
+            <t hangText="Description: "> 
+              Open-Source ICE, TURN and STUN implementation. 
+            </t> 
+            <t hangText="Implementation: ">
+              https://github.com/palerikm/ICE-DualStackFairness
+            </t>
+            <t hangText="Level of maturity: ">
+              Code is stable. Tests
+            </t>
+            <t hangText="Coverage: ">
+              Follows the recommendations in this document
+            </t>
+            <t hangText="Licensing: ">
+              BSD
+            </t>
+            <t hangText="Implementation experience: ">
+              Straightforward as there are no compatibility issues.
+            </t>
+            <t hangText="Contact: ">
+              Paal-Erik Martinsen
+              palmarti@cisco.com
+            </t>
+          </list>
+        </t>
+      </section>
+      <section title="ICE-Dual Starck Fairness Test code">
+        <t>
+          <list style="hanging">
+            <t hangText="Organization: ">Others 
+            </t>
+            <t hangText="Description: "> 
+              Major ICE implementations, browser based and stand-alone ICE, TURN and STUN implementations. 
+            </t> 
+            <t hangText="Implementation: ">
+              Product specific.
+            </t>
+            <t hangText="Level of maturity: ">
+              Code is stable and available in the wild.
+            </t>
+            <t hangText="Coverage: ">
+              Implements the recommendations in this document.
+            </t>
+            <t hangText="Licensing: ">
+              Some opene source, some close source
+            </t>
+            <t hangText="Implementation experience: ">
+              Already implemented in some of the implementations. This
+              documents describes what needs to be done to achieve the
+              desired fairness.
+            </t>
+          </list>
+        </t>
+      </section>
     </section>
 
     <section anchor="security" title="Security Considerations">
@@ -421,6 +517,7 @@
       <?rfc include="reference.RFC.5245"?>
       <?rfc include="reference.RFC.6555"?>
       <?rfc include="reference.RFC.6724"?>
+      <?rfc include="reference.RFC.6982"?>
     </references>
 
     <references title="Informative References">
