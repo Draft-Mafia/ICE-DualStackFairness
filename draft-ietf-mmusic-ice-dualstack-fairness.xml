@@ -116,10 +116,10 @@
         This document describes how to fairly order the candidates in
         multihomed and dual-stack environments, thus affecting the
         sending order of the connectivity checks. If aggressive
-        nomination is in use this will affect what candidate pair is
-        chosen as the active one. Ultimately it should be up to the
-        agent to decide what candidate pair is best suited for
-        transporting media.
+        nomination is in use, this will have an effect on what
+        candidate pair ends up as the active one. Ultimately it should
+        be up to the agent to decide what candidate pair is best
+        suited for transporting media.
       </t>
                   
       <t>
@@ -479,7 +479,7 @@
               Implements the recommendations in this document.
             </t>
             <t hangText="Licensing: ">
-              Some opene source, some close source
+              Some open source, some close source
             </t>
             <t hangText="Implementation experience: ">
               Already implemented in some of the implementations. This
