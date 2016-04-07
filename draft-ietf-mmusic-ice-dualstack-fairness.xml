@@ -74,7 +74,7 @@
       <t>
         Applications should take special care to deprioritize network
         interfaces known to provide unreliable connectivity when
-        operating in a multihomed environment. For example certain
+        operating in a multihomed environment. For example, certain
         tunnel services might provide unreliable connectivity. Doing so
         will ensure a more fair distribution of the connectivity
         checks across available network interfaces on the device. The
@@ -84,7 +84,7 @@
       </t>
 
       <t>
-        There is a also a need to introduce more fairness when
+        There is also a need to introduce more fairness when
         handling connectivity checks for different IP address families
         in dual-stack IPv4/IPv6 ICE scenarios. Section 4.1.2.1 of ICE
         <xref target="RFC5245"/> points to <xref target="RFC3484"/>
@@ -102,7 +102,7 @@
 
       <t>
         To avoid such user noticeable delays when either IPv6 or IPv4
-        path is broken or excessive slow, this specification
+        path is broken or excessively slow, this specification
         encourages intermingling the different address families when
         connectivity checks are performed. Introducing IP address
         family fairness into ICE connectivity checks will lead to more
@@ -155,7 +155,7 @@
         addresses associated with it.  To avoid unnecessary delay when
         performing connectivity checks it would be beneficial to
         prioritize interfaces and IP addresses known by the agent to
-        provide stable connectivity. If the agent have
+        provide stable connectivity. If the agent has
         access to information about the physical network it is
         connected to (Like SSID in a WiFi Network) this can be used as
         information regarding how that network interface should be
@@ -171,7 +171,7 @@
       </t>
 
       <t>
-        Candidates from a interface known to the application to
+        Candidates from an interface known to the application to
         provide unreliable connectivity SHOULD get a low candidate
         priority. This ensures they appear near the end of the
         candidate list, and would be the last to be tested during the
@@ -217,13 +217,13 @@
 
       <t>
         Implementations SHOULD prioritize IPv6 candidates by putting
-        some of them first in the the intermingled checklist. This
-        increases the chance of a IPv6 connectivity checks to complete
+        some of them first in the intermingled checklist. This
+        increases the chance of IPv6 connectivity checks to complete
         first and be ready for nomination or usage. This enables
         implementations to follow the intent of <xref
         target="RFC6555"/> "Happy Eyeballs: Success with Dual-Stack
         Hosts". It is worth noting that the timing recommendations in
-        <xref target="RFC6555"/> are to excessive for ICE usage.
+        <xref target="RFC6555"/> are too excessive for ICE usage.
       </t>      
     </section>
 
@@ -250,7 +250,7 @@
         be chosen.  Instead of having a static local preference value
         for IPv4 and IPv6 addresses, it is possible to choose this
         value dynamically in such a way that IPv4 and IPv6 address
-        candidate priorities ends up intermingled within the same
+        candidate priorities end up intermingled within the same
         candidate type. It is also possible to assign lower priorities
         to IP addresses derived from unreliable interfaces using the
         local preference value.
@@ -258,8 +258,8 @@
       
       <t>
         It is worth mentioning that <xref target="RFC5245"/> section
-        4.1.2 say that; "if there are multiple candidates for a
-        particular component for a particular media stream that have
+        4.1.2 says that; "if there are multiple candidates for a
+        particular component for a particular media stream that has
         the same type, the local preference MUST be unique for each
         one".
       </t>
@@ -273,8 +273,8 @@
       </t>
 
       <t>
-        Candidates with IP addresses from a unreliable interface SHOULD
-        be ordered at the end of the checklist. Not intermingled as the
+        Candidates with IP addresses from an unreliable interface SHOULD
+        be ordered at the end of the checklist,i.e., Not intermingled as the
         dual-stack candidates. 
       </t>
 
@@ -343,7 +343,7 @@
       </t>
 
       <t>
-        The check list is made up by candidate pairs. A candidate pair
+        The check list is made up of candidate pairs. A candidate pair
         is two candidates paired up and given a candidate pair
         priority as described in <xref target="RFC5245"/> section
         5.7.2. Using the pair priority formula:
@@ -391,7 +391,7 @@
         active one.
       </t>
       <t>
-        A test implementation with an example algorithm is available
+        A test implementation of an example algorithm is available at
         <xref target="ICE_dualstack_imp"/>.
       </t>
     </section>
@@ -483,7 +483,7 @@
             </t>
             <t hangText="Implementation experience: ">
               Already implemented in some of the implementations. This
-              documents describes what needs to be done to achieve the
+              document describes what needs to be done to achieve the
               desired fairness.
             </t>
           </list>
