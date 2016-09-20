@@ -13,7 +13,7 @@
 <rfc category="bcp" docName="draft-ietf-ice-dualstack-fairness-latest"
      ipr="trust200902">
   <front>
-    <title abbrev="ICE Multihomed and DualStack Fairness ">ICE
+    <title abbrev="ICE Multihomed and DualStack Guidelines">ICE
     Multihomed and IPv4/IPv6 Dual Stack Fairness</title>
     <author fullname="Paal-Erik Martinsen" initials="P.E" surname="Martinsen">
       <organization abbrev="Cisco">Cisco Systems, Inc.</organization>
@@ -98,7 +98,7 @@
         connectivity.
       </t>
       <t>
-        There is also a need to introduce more fairness when handling
+        There is also a need to introduce better handling of
         connectivity checks for different IP address families in
         dual-stack IPv4/IPv6 ICE scenarios. Following the
         recommendations from RFC6724 <xref target="RFC6724"/> will
@@ -114,8 +114,7 @@
         To avoid such user noticeable delays when either IPv6 or IPv4
         path is broken or excessively slow, this specification
         encourages intermingling the different address families when
-        connectivity checks are performed. Introducing IP address
-        family fairness into ICE connectivity checks will lead to more
+        connectivity checks are performed. This will lead to more
         sustained dual-stack IPv4/IPv6 deployment as users will no
         longer have an incentive to disable IPv6. The cost is a small
         penalty to the address type that otherwise would have been
@@ -138,10 +137,7 @@
         specification only alters the values used to create the
         resulting checklists in such a way that the core mechanisms
         from ICE <xref target="RFC5245"/> and ICEbis <xref
-        target="I-D.ietf-ice-rfc5245bis" /> are still in effect. If an
-        agent supporting the guidelines in this specification talks to
-        an "old" ICE agent, the introduced fairness might be better,
-        but not worse than what exists today.
+        target="I-D.ietf-ice-rfc5245bis" /> are still in effect.
       </t>
     </section>
 
@@ -153,7 +149,7 @@
     </section>
 
     <section anchor="multihomed" 
-             title="Improving ICE Multihomed Fairness">
+             title="ICE Multihomed Recomendations">
       <t>
         A multihomed ICE agent can potentially send and receive
         connectivity checks on all available interfaces and IP
@@ -187,7 +183,7 @@
     </section>
 
 
-    <section title="Improving ICE Dual Stack Fairness">
+    <section title="ICE Dual Stack Recomendations">
       <t>
         Candidates should be prioritized such that a sequence of
         candidates belonging to the same address family will be
@@ -222,7 +218,24 @@
         Hosts". It is worth noting that the timing recommendations in
         <xref target="RFC6555"/> will be overruled by how ICE paces
         out its connectivity checks. 
-      </t>      
+      </t>     
+      <t>
+        A simple formula to calculate how many IPv6 addresses to put
+        before any IPv4 addresses could look like:
+        <figure>
+          <artwork align="left"><![CDATA[
+             Hi = (N_4 + N_6) / N_4
+
+             Where Hi  = Head start before intermingling starts
+                   N_4 = Number of IPv4 addresses
+                   N_6 = Number of IPv6 addresses
+          ]]></artwork>
+        </figure> 
+        If a host have 2 IPv4 addresses and 6 IPv6 addresses, it will
+        insert an IP4 address after 4 IPv6 addresses by choosing the
+        appropriate local preference values when calculating the pair
+        priorities. 
+      </t>
     </section>
 
     
@@ -367,8 +380,7 @@
       <t>
         These recommendations are backward compatible with a standard
         ICE implementation. The resulting local and remote checklist
-        will still be synchronized. The introduced fairness might be
-        better, but not worse than what exists today
+        will still be synchronized.
       </t>
       <t>
         Dependant of the nomination method in use the procedures
