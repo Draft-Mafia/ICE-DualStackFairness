@@ -14,7 +14,7 @@
      ipr="trust200902">
   <front>
     <title abbrev="ICE Multihomed and DualStack Guidelines">ICE
-    Multihomed and IPv4/IPv6 Dual Stack Fairness</title>
+    Multihomed and IPv4/IPv6 Dual Stack Guidelines</title>
     <author fullname="Paal-Erik Martinsen" initials="P.E" surname="Martinsen">
       <organization abbrev="Cisco">Cisco Systems, Inc.</organization>
       <address>
@@ -171,7 +171,9 @@
       <t>
         Candidates from an interface known to the application to
         provide unreliable connectivity should get a low candidate
-        priority.
+        priority. When to consider connectivity as unreliable is
+        implementation specific. Repeated failures in less than a day
+        would probably in most cases be considered unreliable.
       </t>
       <t>
         If the application is unable to get any interface information
