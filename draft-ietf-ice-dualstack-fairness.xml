@@ -172,8 +172,12 @@
         Candidates from an interface known to the application to
         provide unreliable connectivity should get a low candidate
         priority. When to consider connectivity as unreliable is
-        implementation specific. Repeated failures in less than a day
-        would probably in most cases be considered unreliable.
+        implementation specific. Usage of ICE is not limited to VoIP
+        applications. What an application sees as unreliability might
+        be determined by a mix of how long lived the connection is,
+        how often setup is required and others, for now unknown,
+        requirements. This is purely an optimization to speed up the
+        ICE connectivity check phase.
       </t>
       <t>
         If the application is unable to get any interface information
