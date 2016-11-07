@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
@@ -111,14 +111,18 @@
         prioritized address family is broken.
       </t>
       <t>
-        To avoid such user noticeable delays when either IPv6 or IPv4
-        path is broken or excessively slow, this specification
-        encourages intermingling the different address families when
-        connectivity checks are performed. This will lead to more
-        sustained dual-stack IPv4/IPv6 deployment as users will no
-        longer have an incentive to disable IPv6. The cost is a small
-        penalty to the address type that otherwise would have been
-        prioritized.
+        To avoid user noticeable delays when either IPv6 or IPv4 path
+        is broken or excessively slow, this specification encourages
+        intermingling the different address families when connectivity
+        checks are performed.  This will lead to more sustained
+        dual-stack IPv4/IPv6 deployment as users will no longer have
+        an incentive to disable IPv6. The cost is a small penalty to
+        the address type that otherwise would have been
+        prioritized. Further this document recommends to keep track of
+        previous known connectivity problem and assign a lower
+        priority to those addresses. Specific mechanisms and rules for
+        tracking connectivity issues are out of scope for this
+        document.
       </t>
       <t>
         This document describes what parameters an agent can safely
@@ -179,7 +183,7 @@
         requirements. This is purely an optimization to speed up the
         ICE connectivity check phase.
       </t>
-      <t>
+       <t>
         If the application is unable to get any interface information
         regarding type or unable to store any relevant metrics, it
         should treat all interfaces as if they have reliable
@@ -514,7 +518,8 @@
       <t>
         Authors would like to thank Dan Wing, Ari Keranen, Bernard
         Aboba, Martin Thomson, Jonathan Lennox, Balint Menyhart, Ole
-        Troan and Simon Perreault for their comments and review.
+        Troan, Simon Perreault, Ben Cambell and Mirja Kühlewind for
+        their comments and review.
       </t>
     </section>
     
